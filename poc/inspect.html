@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anatomy Inspector</title>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+<style>
+  html, body { margin: 0; height: 100%; background: #05070c; color: #c9d3ea; font: 12px/1.4 system-ui, sans-serif; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #info { position: fixed; left: 10px; bottom: 8px; color: #8b95b2; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="info">Dev tool: orthographic views of the built head anatomy on a 1 cm grid.
+  ?show=skull,sinus,nose,teeth,lining,muscle,soft,skin &amp;look=solid|xray &amp;views=front,side,top,back,quarter &amp;center=x,y,z &amp;span=cm &amp;labels</div>
+<script type="module" src="./inspect.js"></script>
+</body>
+</html>

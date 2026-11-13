@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Health Mirror · Hand X-ray</title>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+<style>
+  :root { --bg:#090c13; --panel:#141926; --line:#262d42; --fg:#eef1f8; --dim:#8b95b2; --accent:#7fd1ff; --ok:#57d98a; --bad:#ff5d73; --warn:#ffcf5c; --surgery:#ffe066; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; min-height:100%; background:var(--bg); color:var(--fg); font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { display:flex; gap:18px; padding:18px; justify-content:center; align-items:flex-start; }
+  .stagecol { flex:1 1 auto; min-width:0; display:flex; justify-content:center; position:sticky; top:18px; }
+  .stage { position:relative; width:min(100%, calc((100vh - 36px) * var(--ar, 1.3333))); aspect-ratio:var(--ar, 1.3333);
+           background:radial-gradient(ellipse at 50% 40%, #131a2b, #05070c 75%); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .stage canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  /* the camera picture is drawn inside the 3D canvas, in step with the bones; the <video> only supplies frames */
+  #video { position:absolute; left:0; top:0; width:2px; height:2px; opacity:0; pointer-events:none; }
+  #gl { transform:scaleX(-1); pointer-events:none; }
+  #hud { pointer-events:none; }
+  #intro { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding:24px; }
+  #intro h2 { margin:0; font-size:30px; letter-spacing:.04em; font-weight:800; }
+  #intro p { margin:0; color:var(--dim); max-width:48ch; }
+  button.big { font:inherit; font-weight:700; font-size:17px; color:#06121c; background:var(--accent); border:0; border-radius:12px; padding:13px 22px; cursor:pointer; }
+  button.big:disabled { opacity:.6; cursor:default; }
+  .hint { position:absolute; left:50%; bottom:12px; transform:translateX(-50%); background:rgba(9,12,19,.78); border:1px solid var(--line);
+          color:#c9d3ea; font-size:13px; padding:6px 12px; border-radius:999px; white-space:nowrap; pointer-events:none; }
+  /* the real X-rays, on the side of the picture away from the hand */
+  .xray { position:absolute; left:12px; top:12px; width:min(44%, 430px); background:rgba(9,12,19,.93); border:1px solid #3a4560; border-radius:10px; padding:7px; }
+  .xray.right { left:auto; right:12px; }
+  .xray .pair { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .xray { cursor:zoom-in; }
+  figure { margin:0; position:relative; background:#000; border-radius:6px; overflow:hidden; }
+  .xray figure { aspect-ratio:3/5; }
+  figure img { position:absolute; left:0; top:0; max-width:none; display:block; }
+  figcaption { position:absolute; left:6px; top:5px; font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:1px 7px; border-radius:999px; background:rgba(9,12,19,.8); }
+  figure.n figcaption { color:#9fe6b8; } figure.b figcaption { color:#ffb199; }
+  /* the ring around the break, on the X-ray: the same ring is drawn around the break on the hand */
+  .marks { position:absolute; inset:0; pointer-events:none; }
+  .mark { position:absolute; border:2px solid var(--c); border-radius:50%; box-shadow:0 0 0 1.5px rgba(4,7,13,.75), inset 0 0 0 1.5px rgba(4,7,13,.75); animation:markpulse 1.05s ease-in-out infinite alternate; }
+  @keyframes markpulse { from { opacity:.55; } to { opacity:1; } }
+  .xray .cap { font-size:12px; color:#c9d3ea; padding:6px 2px 1px; }
+  .xray .cap b { color:#fff; }
+  #big { position:absolute; inset:0; z-index:5; background:rgba(4,6,10,.97); display:flex; flex-direction:column; align-items:stretch; gap:8px; padding:14px; cursor:zoom-out; }
+  #big .pair { flex:1; min-height:0; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  #big figcaption { font-size:13px; left:10px; top:9px; padding:2px 10px; }
+  #big #bigcap { font-size:12.5px; color:#c9d3ea; text-align:center; }
+  aside { flex:0 0 340px; display:flex; flex-direction:column; gap:12px; }
+  .head { display:flex; align-items:center; gap:10px; }
+  h1 { margin:0; font-size:22px; letter-spacing:.02em; }
+  .badge { font-size:11px; font-weight:700; color:#1a1300; background:var(--surgery); padding:2px 8px; border-radius:999px; }
+  .tabs { display:flex; gap:6px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:5px; }
+  .tabs a { flex:1 1 auto !important; font-size:13.5px !important; padding:8px 6px !important; white-space:nowrap; }
+  .tabs a, .seg button { flex:1; font:inherit; font-size:14px; font-weight:600; color:var(--fg); background:transparent; border:0; border-radius:8px; padding:8px 10px; cursor:pointer; text-align:center; text-decoration:none; }
+  .tabs a.on { background:var(--accent); color:#06121c; }
+  .seg { display:flex; gap:6px; }
+  .seg button { background:#0b0f18; border:1px solid var(--line); }
+  .seg.small button { font-size:13px; padding:6px 8px; font-weight:500; }
+  .seg button.on { background:#1d3a55; border-color:var(--accent); color:#fff; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 14px; }
+  .panel h3 { margin:0 0 9px; font-size:12px; font-weight:600; color:var(--dim); text-transform:uppercase; letter-spacing:.09em; display:flex; justify-content:space-between; }
+  .keys { text-transform:none; letter-spacing:0; color:#6f7a98; font-weight:500; }
+  #status { font-weight:600; font-size:14px; }
+  #status.ok { color:var(--ok); } #status.bad { color:var(--bad); }
+  #speed { font-size:12px; color:var(--dim); margin-top:4px; font-variant-numeric:tabular-nums; }
+  #slow { border-color:#6b5520; background:#241d0c; color:var(--warn); font-size:13.5px; }
+  .src, .small { font-size:12px; color:var(--dim); margin:0; }
+  .cases { display:flex; flex-direction:column; gap:5px; }
+  .case { display:block; width:100%; text-align:left; font:inherit; color:var(--fg); background:#0b0f18; border:1px solid var(--line); border-radius:9px; padding:7px 10px 7px 34px; cursor:pointer; position:relative; }
+  .case::before { content:""; position:absolute; left:11px; top:11px; width:13px; height:13px; border-radius:50%; border:2px solid #56617f; }   /* one choice at a time */
+  .case.on::before { border-color:var(--accent); background:radial-gradient(circle, var(--accent) 0 3.5px, transparent 4.5px); }
+  .case b { display:flex; align-items:center; gap:8px; font-size:14.5px; font-weight:600; }
+  .case b i { width:9px; height:9px; border-radius:50%; flex:none; }
+  .case b kbd { margin-left:auto; font:inherit; font-size:11px; font-weight:500; color:#6f7a98; border:1px solid var(--line); border-radius:4px; padding:0 5px; }
+  .case small { display:block; font-size:12px; color:var(--dim); margin-top:1px; }
+  .case.on { border-color:var(--accent); background:#10243a; }
+  .flip { margin-top:10px; width:100%; font:inherit; font-size:14px; font-weight:600; color:var(--fg); background:#0b0f18; border:1px solid var(--line); border-radius:9px; padding:8px 10px; cursor:pointer; }
+  .flip:hover, .case:hover { border-color:#4a5675; }
+  label.ck { display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; }
+  input[type=checkbox] { width:17px; height:17px; margin:0; accent-color:var(--accent); flex:none; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; }
+  .row input[type=range] { flex:1; max-width:56%; accent-color:var(--accent); }
+  .card h4 { margin:0 0 2px; font-size:17px; }
+  .card .where { margin:0 0 8px; font-size:13px; color:var(--dim); }
+  .card p { margin:0 0 8px; font-size:14px; }
+  .card h5 { margin:10px 0 4px; font-size:12px; font-weight:600; color:var(--dim); text-transform:uppercase; letter-spacing:.07em; }
+  .card ul { margin:0 0 4px; padding-left:18px; font-size:13.5px; color:#c9d3ea; }
+  .card li { margin-bottom:5px; }
+  .credits { margin:6px 0 0; padding-left:16px; font-size:11.5px; color:var(--dim); }
+  .credits a { color:#9fb4d8; }
+  [hidden] { display:none !important; }
+  @media (max-width:900px) { .wrap { flex-direction:column; align-items:stretch; } aside { flex:none; } .stage { width:100%; } .stagecol { position:static; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stagecol">
+    <div class="stage" id="stage">
+      <video id="video" playsinline muted autoplay></video>
+      <canvas id="gl"></canvas>
+      <canvas id="hud"></canvas>
+      <div class="xray" id="xcard" hidden>
+        <div class="pair">
+          <figure class="n"><img id="ximgN" alt="Normal X-ray"><figcaption>Normal</figcaption></figure>
+          <figure class="b"><img id="ximgB" alt="X-ray of the injury"><span class="marks" id="xmarks"></span><figcaption>Broken</figcaption></figure>
+        </div>
+        <div class="cap" id="xcap"></div>
+      </div>
+      <div id="big" hidden>
+        <div class="pair">
+          <figure class="n"><img id="bimgN" alt="Normal X-ray"><figcaption>Normal</figcaption></figure>
+          <figure class="b"><img id="bimgB" alt="X-ray of the injury"><span class="marks" id="bmarks"></span><figcaption>Broken</figcaption></figure>
+        </div>
+        <div id="bigcap"></div>
+      </div>
+      <div id="intro">
+        <h2>HAND X-RAY</h2>
+        <p>Hold your hand up to the camera and see its bones. Then pick an injury to see what a broken wrist, knuckle or finger looks like, next to the real X-ray.</p>
+        <button class="big" id="start" disabled>Loading…</button>
+        <p class="small">The camera picture stays on this computer.</p>
+      </div>
+      <div class="hint" id="hint" hidden></div>
+    </div>
+  </div>
+
+  <aside>
+    <div class="head"><h1>Health Mirror</h1><span class="badge">Example injuries</span></div>
+    <div class="tabs"><a href="./?mode=sinus">Sinuses</a><a href="./?mode=teeth">Teeth</a><a class="on" href="./hand.html">Hand X-ray</a><a href="./original.html">Original</a></div>
+    <div class="panel"><div id="status">Loading…</div><div id="speed" hidden></div></div>
+    <div class="panel" id="slow" hidden>This browser is drawing without the graphics chip (software rendering), so the mirror runs at reduced quality. Closing every browser window and reopening it usually fixes that.</div>
+
+    <div class="panel">
+      <h3>Show <span class="keys">0 1 2 3 · Space flips</span></h3>
+      <div class="cases" id="cases" role="radiogroup" aria-label="What to show on the hand"></div>
+      <button class="flip" id="flip"></button>
+      <p class="small" style="margin-top:9px">The injuries are examples from public X-rays of other people, put on your hand so you can compare. They are not from your records.</p>
+    </div>
+    <div class="panel card" id="hcard"></div>
+
+    <div class="panel">
+      <h3>Look</h3>
+      <div class="seg small" id="look"><button data-k="glow">X-ray glow</button><button data-k="solid">Solid bones</button></div>
+      <div class="row" style="margin-top:10px"><label for="dim">Dim my hand</label><input id="dim" type="range" min="0" max="1" step="0.01"></div>
+      <label class="ck" style="margin-top:10px"><input type="checkbox" id="names"> Name the bones</label>
+      <label class="ck" style="margin-top:10px"><input type="checkbox" id="showspeed"> Show speed</label>
+    </div>
+    <div class="panel">
+      <p class="small">The bones are real 3D anatomy of one adult's hand (BodyParts3D), hung on the 21 points the tracker finds on your hand. They are not a scan of you. The camera only sees your hand, so the forearm bones are drawn as if your wrist were straight.
+        Not a medical tool. Anatomy: BodyParts3D, © The Database Center for Life Science, CC BY-SA 2.1 Japan.</p>
+      <p class="small" style="margin-top:8px">X-rays, from Wikimedia Commons:</p>
+      <ul class="credits" id="credits"></ul>
+    </div>
+  </aside>
+</div>
+<script type="module" src="./hand.js"></script>
+</body>
+</html>

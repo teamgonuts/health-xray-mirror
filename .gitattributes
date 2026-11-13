@@ -1,0 +1,2 @@
+# Keep files byte-identical to upstream (LF), regardless of a global core.autocrlf.
+* text=auto eol=lf

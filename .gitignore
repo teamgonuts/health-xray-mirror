@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Your own records and X-rays go in poc/data/ and stay on your computer.
+poc/data/
+# Raw downloads used to build poc/assets (re-creatable with tools/).
+tools/cache/

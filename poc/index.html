@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Health Mirror</title>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+<style>
+  :root { --bg:#090c13; --panel:#141926; --line:#262d42; --fg:#eef1f8; --dim:#8b95b2; --accent:#7fd1ff;
+          --ok:#57d98a; --bad:#ff5d73; --warn:#ffcf5c; --clear:#67dcff; --inflamed:#ffb35c; --surgery:#ffe066; --tooth:#4cc7ff; --chip:#ff8c1f; --neck:#ff73c8; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; min-height:100%; background:var(--bg); color:var(--fg);
+               font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { display:flex; gap:18px; padding:18px; justify-content:center; align-items:flex-start; }
+  .stagecol { flex:1 1 auto; min-width:0; display:flex; justify-content:center; position:sticky; top:18px; }
+  .stage { position:relative; width:min(100%, calc((100vh - 36px) * var(--ar, 1.3333))); aspect-ratio:var(--ar, 1.3333);
+           background:radial-gradient(ellipse at 50% 40%, #131a2b, #05070c 75%); border:1px solid var(--line);
+           border-radius:16px; overflow:hidden; }
+  .stage canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  /* the camera picture is drawn inside the 3D canvas, in step with the anatomy; the <video> only supplies frames */
+  #video { position:absolute; left:0; top:0; width:2px; height:2px; opacity:0; pointer-events:none; }
+  #gl { transform:scaleX(-1); pointer-events:none; }
+  #hud { pointer-events:none; }
+  #intro { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding:24px; }
+  #intro h2 { margin:0; font-size:30px; letter-spacing:.04em; font-weight:800; }
+  #intro p { margin:0; color:var(--dim); max-width:46ch; }
+  button.big { font:inherit; font-weight:700; font-size:17px; color:#06121c; background:var(--accent); border:0; border-radius:12px; padding:13px 22px; cursor:pointer; }
+  button.big:disabled { opacity:.6; cursor:default; }
+  .hint { position:absolute; left:50%; bottom:12px; transform:translateX(-50%); background:rgba(9,12,19,.78); border:1px solid var(--line);
+          color:#c9d3ea; font-size:13px; padding:6px 12px; border-radius:999px; white-space:nowrap; pointer-events:none; }
+  .xray { position:absolute; left:12px; top:12px; width:min(30%, 280px); background:rgba(9,12,19,.92); border:1px solid #3a4560; border-radius:10px; padding:6px; }
+  .xray.right { left:auto; right:12px; }
+  .xray img { display:block; width:100%; border-radius:6px; cursor:pointer; }
+  .xray .cap { font-size:12px; color:#c9d3ea; padding:5px 2px 1px; display:flex; justify-content:space-between; gap:8px; }
+  .xray .cap button { font:inherit; font-size:12px; background:none; border:1px solid var(--line); color:var(--accent); border-radius:6px; padding:0 6px; cursor:pointer; }
+  aside { flex:0 0 340px; display:flex; flex-direction:column; gap:12px; }
+  .head { display:flex; align-items:center; gap:10px; }
+  h1 { margin:0; font-size:22px; letter-spacing:.02em; }
+  .badge { font-size:11px; font-weight:700; color:#1a1300; background:var(--surgery); padding:2px 8px; border-radius:999px; }
+  .tabs { display:flex; gap:6px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:5px; }
+  .tabs button, .seg button { flex:1; font:inherit; font-size:14px; font-weight:600; color:var(--fg); background:transparent; border:0; border-radius:8px; padding:8px 10px; cursor:pointer; }
+  .tabs button { flex:1 1 auto; font-size:13.5px; padding:8px 6px; white-space:nowrap; }
+  .tabs button.on { background:var(--accent); color:#06121c; }
+  .seg { display:flex; gap:6px; }
+  .seg button { background:#0b0f18; border:1px solid var(--line); }
+  .seg.small button { font-size:13px; padding:6px 8px; font-weight:500; }
+  .seg button small { display:block; font-size:11.5px; font-weight:500; opacity:.8; }
+  .seg button.on { background:#1d3a55; border-color:var(--accent); color:#fff; }
+  .seg button.on[data-p="child"] { background:var(--inflamed); color:#1d1000; border-color:var(--inflamed); }
+  .seg button.on[data-p="2020"] { background:var(--clear); color:#04161d; border-color:var(--clear); }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 14px; }
+  .panel h3 { margin:0 0 9px; font-size:12px; font-weight:600; color:var(--dim); text-transform:uppercase; letter-spacing:.09em; display:flex; justify-content:space-between; }
+  .keys { text-transform:none; letter-spacing:0; color:#6f7a98; font-weight:500; }
+  #status { font-weight:600; font-size:14px; }
+  #status.ok { color:var(--ok); } #status.bad { color:var(--bad); }
+  #speed { font-size:12px; color:var(--dim); margin-top:4px; font-variant-numeric:tabular-nums; }
+  #slow { border-color:#6b5520; background:#241d0c; color:var(--warn); font-size:13.5px; }
+  .sum { margin:10px 0 4px; font-size:14px; }
+  .src, .small { font-size:12px; color:var(--dim); margin:0; }
+  .eg { font-size:12.5px; color:#e8c79a; margin:6px 0 0; }
+  .levels { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+  .levels button { display:flex; align-items:center; gap:9px; text-align:left; font:inherit; font-size:14px; color:var(--fg); background:#0b0f18;
+                   border:1px solid var(--line); border-radius:9px; padding:6px 10px; cursor:pointer; }
+  .levels button i { width:9px; height:9px; border-radius:50%; flex:none; }
+  .levels button.on { border-color:var(--accent); background:#10243a; }
+  .levels button:hover { border-color:#4a5675; }
+  .levels .grp { font-size:11px; color:#6f7a98; text-transform:uppercase; letter-spacing:.08em; margin:8px 0 0; }
+  .lv { display:flex; align-items:center; gap:8px; }
+  .lv > button { flex:1; min-width:0; }
+  .levels button small, .lv.plain small { margin-left:auto; font-size:11.5px; color:var(--dim); white-space:nowrap; }
+  .lv.off > button, .lv.plain.off > span, .lv.plain.off > small { opacity:.45; }
+  .lv.plain { font-size:14px; cursor:pointer; padding:5px 11px 5px 0; }
+  .lv.plain > span { padding-left:11px; }
+  .kind { margin:10px 0 0; font-size:11.5px; color:var(--dim); text-transform:uppercase; letter-spacing:.06em; }
+  .kind + .sum { margin-top:4px; }
+  #slegend { flex-direction:column; gap:4px; }
+  .cmp { display:grid; gap:6px; margin:0 0 4px; }
+  .cmp button { display:block; width:100%; font:inherit; text-align:left; color:var(--fg); background:#0b0f18; border:1px solid var(--line); border-radius:9px; padding:8px 10px; cursor:pointer; }
+  .cmp button.on { border-color:var(--accent); background:#10243a; }
+  .cmp b { font-size:14px; } .cmp span { font-size:12px; color:var(--dim); margin-left:8px; }
+  .cmp em { display:block; font-style:normal; font-weight:600; font-size:13px; margin-top:3px; }
+  .cmp p { margin:3px 0 0; font-size:13px; color:#c9d3ea; }
+  .card details { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; }
+  .card details summary { text-transform:none; letter-spacing:0; font-size:13.5px; color:var(--fg); }
+  .card details[open] summary { margin-bottom:6px; }
+  .card details p, .card details li { font-size:13.5px; color:#c9d3ea; margin-bottom:5px; }
+  label.ck { display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; }
+  input[type=checkbox] { width:17px; height:17px; margin:0; accent-color:var(--accent); }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; }
+  .row input[type=range] { flex:1; max-width:56%; accent-color:var(--accent); }
+  .row label b { font-weight:600; color:var(--accent); margin-left:4px; font-variant-numeric:tabular-nums; }
+  .card h4 { margin:0 0 2px; font-size:17px; }
+  .card .where { margin:0 0 8px; font-size:13px; color:var(--dim); }
+  .card p { margin:0 0 8px; font-size:14px; }
+  .card ul { margin:0; padding-left:18px; font-size:13.5px; }
+  .card li { margin-bottom:4px; }
+  .card li.future { color:#5f6987; }
+  .card .when { color:var(--dim); font-variant-numeric:tabular-nums; margin-right:6px; }
+  .chart { display:grid; grid-template-columns:repeat(17, 1fr); gap:3px; margin-top:12px; }
+  .chart button { font:inherit; font-size:10.5px; font-variant-numeric:tabular-nums; color:#c9d3ea; background:#0b0f18; border:1px solid var(--line);
+                  border-radius:5px; padding:4px 0; cursor:pointer; }
+  .chart .gap { visibility:hidden; }
+  .chart button.treated { border-color:var(--tooth); color:var(--tooth); }
+  .chart button.chipped { border-color:var(--chip); color:var(--chip); }
+  .chart button.extracted { color:#55607e; border-style:dashed; }
+  .chart button.off { opacity:.35; }
+  .chart button.on { background:var(--accent); color:#06121c; border-color:var(--accent); opacity:1; }
+  .chartlab { display:flex; justify-content:space-between; font-size:11px; color:#6f7a98; margin-top:4px; }
+  .legend { display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:9px; font-size:12px; color:var(--dim); }
+  .legend i { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; vertical-align:-1px; }
+  .thumbs { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+  .thumbs button { padding:0; border:1px solid var(--line); border-radius:6px; background:#000; cursor:pointer; overflow:hidden; }
+  .thumbs button.on { border-color:var(--accent); }
+  .thumbs img { display:block; width:100%; aspect-ratio:1; object-fit:cover; opacity:.85; }
+  .thumbs span { display:block; font-size:10px; color:var(--dim); padding:2px 0; }
+  .xlinks { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+  .xlinks button { font:inherit; font-size:12px; color:var(--accent); background:#0b0f18; border:1px solid var(--line); border-radius:7px; padding:3px 8px; cursor:pointer; }
+  #tnotes { margin:0; padding-left:18px; font-size:13.5px; } #tnotes li { margin-bottom:5px; } #tnotes li.future { color:#5f6987; }
+  details summary { cursor:pointer; font-size:12px; font-weight:600; color:var(--dim); text-transform:uppercase; letter-spacing:.09em; }
+  details[open] summary { margin-bottom:10px; }
+  [hidden] { display:none !important; }
+  @media (max-width:900px) { .wrap { flex-direction:column; align-items:stretch; } aside { flex:none; } .stage { width:100%; } .stagecol { position:static; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stagecol">
+    <div class="stage" id="stage">
+      <video id="video" playsinline muted autoplay></video>
+      <canvas id="gl"></canvas>
+      <canvas id="hud"></canvas>
+      <div class="xray" id="xray" hidden><img id="xrayimg" alt="Dental X-ray" title="Click to close"><div class="cap"><span id="xraycap"></span><button id="xraynext" hidden>Next</button></div></div>
+      <div id="intro">
+        <h2>HEALTH MIRROR</h2>
+        <p>Your own sinus and dental records, pinned to your face through the webcam.</p>
+        <button class="big" id="start" disabled>Loading…</button>
+        <p class="small">The camera picture stays on this computer.</p>
+      </div>
+      <div class="hint" id="hint" hidden></div>
+    </div>
+  </div>
+
+  <aside>
+    <div class="head"><h1>Health Mirror</h1><span class="badge" id="sample" hidden>Sample data</span></div>
+    <div class="tabs" id="tabs"><button data-mode="sinus">Sinuses</button><button data-mode="teeth">Teeth</button><button data-href="./hand.html">Hand X-ray</button><button data-href="./original.html">Original</button></div>
+    <div class="panel"><div id="status">Loading…</div><div id="speed" hidden></div></div>
+    <div class="panel" id="slow" hidden>This browser is drawing without the graphics chip (software rendering), so the mirror runs at reduced quality. Closing every browser window and reopening it usually fixes that.</div>
+
+    <section id="p-sinus">
+      <div class="panel">
+        <div class="seg" id="period"><button data-p="child">Then</button><button data-p="2020">Now</button></div>
+        <p class="kind" id="pkind"></p>
+        <p class="sum" id="psum"></p>
+        <p class="eg" id="pnote" hidden></p>
+        <p class="src" id="psrc"></p>
+        <div class="legend" id="slegend"></div>
+      </div>
+      <div class="panel">
+        <h3>Look</h3>
+        <div class="seg small" id="slook"></div>
+        <div class="row" id="cutrow" style="margin-top:10px" hidden><label for="cut">Slice depth</label><input id="cut" type="range" min="-4.5" max="6" step="0.05"></div>
+      </div>
+      <div class="panel">
+        <h3>What to show <span class="keys">↑ ↓ or scroll to step through</span></h3>
+        <div class="levels" id="levels"></div>
+      </div>
+      <div class="panel card" id="scard"></div>
+    </section>
+
+    <section id="p-teeth" hidden>
+      <div class="panel">
+        <h3>Which teeth <span class="keys">↑ ↓ arch · ← → tooth</span></h3>
+        <div class="seg small" id="arch"><button data-a="all">All</button><button data-a="upper">Upper</button><button data-a="lower">Lower</button></div>
+        <div class="chart" id="chart"></div>
+        <div class="chartlab"><span>your left</span><span>as you see yourself</span><span>your right</span></div>
+        <div class="legend"><span><i style="background:var(--tooth)"></i>filling</span><span><i style="background:var(--chip)"></i>chipped</span>
+          <span><i style="background:var(--neck)"></i>sensitive neck</span><span><i style="border:1px dashed #8c9bc4"></i>removed</span></div>
+      </div>
+      <div class="panel card" id="tcard"></div>
+      <div class="panel">
+        <h3>Look</h3>
+        <div class="seg small" id="tlook"></div>
+        <div class="row" style="margin-top:10px"><label for="asof">As of<b id="asofv"></b></label><input id="asof" type="range" min="0" max="1" step="1"></div>
+        <label class="ck" style="margin-top:10px"><input type="checkbox" id="muscles"> Show the jaw muscles (grinding)</label>
+      </div>
+      <div class="panel"><details><summary>Notes from the dentist</summary><ul id="tnotes"></ul></details></div>
+      <div class="panel"><details><summary>All dental X-rays <span class="keys" id="xcount"></span></summary><div class="thumbs" id="thumbs"></div></details></div>
+    </section>
+
+    <div class="panel">
+      <div class="row"><label for="zoom"><span id="zooml">Zoom on my face</span><b id="zoomv"></b></label><input id="zoom" type="range" min="1" max="3.5" step="0.05"></div>
+      <div class="row" style="margin-top:10px"><label for="dim">Dim my face</label><input id="dim" type="range" min="0" max="0.95" step="0.01"></div>
+      <label class="ck" style="margin-top:10px"><input type="checkbox" id="finger"> Point with my finger to pick a sinus or a tooth</label>
+      <label class="ck" style="margin-top:10px"><input type="checkbox" id="showspeed"> Show speed</label>
+    </div>
+    <p class="small">Teeth, nose bones and skull are real 3D anatomy of one adult (BodyParts3D), fitted to your face. The sinus cavities are
+      reconstructed inside those bones, because the dataset has none. None of it is a scan of you; colours and text come from your records.
+      Not a medical tool. Anatomy: BodyParts3D, © The Database Center for Life Science, CC BY-SA 2.1 Japan.</p>
+  </aside>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

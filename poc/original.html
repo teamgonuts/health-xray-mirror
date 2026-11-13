@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Health Mirror · Original</title>
+<style>
+  html, body { margin:0; height:100%; background:#090c13; }
+  iframe { display:block; width:100%; height:100%; border:0; }
+</style>
+</head>
+<body>
+<!-- The fourth mode of the Health Mirror: the original X-Ray Mirror (../index.html), with its skull, brain, muscles and
+     labels. That file is shown as it is, inside a frame; the mode tabs are added to its side panel from here, so the
+     original stays exactly as it was published. Anything after ? or # is passed on (for example original.html#demo). -->
+<iframe id="app" allow="camera" title="X-Ray Mirror"></iframe>
+<script>
+  // The first time you come here from the Health Mirror, the brain and the labels are switched on.
+  // After that the original app remembers your own choices, as it always did.
+  try {
+    if (!localStorage.getItem("hm_original_seen")) {
+      const s = JSON.parse(localStorage.getItem("xr_settings") || "{}");
+      localStorage.setItem("xr_settings", JSON.stringify({ ...s, skull: true, brain: true, eyes: true, outline: true, labels: true }));
+      localStorage.setItem("hm_original_seen", "1");
+    }
+  } catch (e) {}
+
+  const frame = document.getElementById("app");
+  frame.addEventListener("load", () => {
+    const doc = frame.contentDocument, title = doc && doc.querySelector("aside h1");
+    if (!title || doc.getElementById("hm-tabs")) return;
+    const css = doc.createElement("style");
+    css.textContent = `
+      #hm-tabs { display:flex; gap:6px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:5px; }
+      #hm-tabs a { flex:1 1 auto; font-size:13.5px; font-weight:600; color:var(--fg); text-decoration:none; text-align:center; border-radius:8px; padding:8px 6px; white-space:nowrap; }
+      #hm-tabs a.on { background:var(--accent); color:#06121c; }`;
+    doc.head.appendChild(css);
+    const tabs = doc.createElement("div"); tabs.id = "hm-tabs";
+    const link = (href, text, on) => `<a target="_top" href="${new URL(href, location.href).href}"${on ? ' class="on"' : ""}>${text}</a>`;
+    tabs.innerHTML = link("./?mode=sinus", "Sinuses") + link("./?mode=teeth", "Teeth") + link("./hand.html", "Hand X-ray") + link("./original.html", "Original", true);
+    title.after(tabs);
+  });
+  frame.src = "../index.html" + location.search + location.hash;
+</script>
+</body>
+</html>

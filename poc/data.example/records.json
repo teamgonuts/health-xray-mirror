@@ -1,0 +1,105 @@
+{
+  "person": "Sample person",
+  "sample": true,
+  "sinuses": {
+    "periods": {
+      "child": {
+        "label": "2010",
+        "age": "age 9",
+        "kind": "Sample childhood record",
+        "years": "2010",
+        "drainage": "unknown",
+        "example": "Sample data: this is a made-up person. Five of the eight sinuses are drawn inflamed so you can see the difference with the later date.",
+        "summary": "SAMPLE DATA, not a real person. A winter of repeated sinus infections at age 9. A scan showed five of the eight sinuses inflamed. Treated with antibiotics; the adenoids were removed the same year.",
+        "source": "Fictional example. To show your own records, put them in poc/data/records.json."
+      },
+      "2020": {
+        "label": "2024",
+        "age": "age 23",
+        "kind": "Sample CT scan",
+        "years": "2024",
+        "drainage": "open",
+        "summary": "SAMPLE DATA, not a real person. CT of the sinuses: all sinuses clear and full of air, drainage channels open on both sides.",
+        "source": "Fictional example."
+      }
+    },
+    "unknown": [
+      "This is sample data, so nothing here describes a real person.",
+      "A real childhood record often says only \"inflamed\": no fill level and no measurements. The view then shows a state, not a picture of the actual disease.",
+      "Whether the drainage channels were blocked in the first record. They are drawn pale and still for that date because the sample record doesn't describe them."
+    ],
+    "next": [
+      "With your own records: the hospital that made a CT scan can give you a copy of the images (DICOM files).",
+      "Letters from an ear, nose and throat doctor usually hold the clearest summary of what a scan showed."
+    ],
+    "structures": {
+      "frontal": {
+        "child": { "state": "inflamed", "short": "inflamed, both sides", "text": "Sample: both frontal sinuses, behind the forehead, were inflamed." },
+        "2020": { "state": "clear", "short": "clear, drainage open", "text": "Sample: clear and full of air. The drainage channel down into the nose is open on both sides." }
+      },
+      "ethmoid": {
+        "child": { "state": "inflamed", "sides": { "R": "clear" }, "short": "left inflamed, right clear", "text": "Sample: the left ethmoid cells, between the eyes, were inflamed and the right ones were clear. A record can say something different for each side." },
+        "2020": { "state": "clear", "short": "clear on both sides", "text": "Sample: clear and full of air on both sides." }
+      },
+      "sphenoid": {
+        "child": { "state": "clear", "short": "clear", "text": "Sample: the sphenoid sinus, deep behind the nose, was clear." },
+        "2020": { "state": "clear", "short": "clear, no fluid", "text": "Sample: clear, with no fluid." }
+      },
+      "maxillary": {
+        "child": { "state": "inflamed", "short": "inflamed, both sides", "text": "Sample: both maxillary sinuses, in the cheeks, were inflamed." },
+        "2020": { "state": "clear", "short": "clear, drainage open", "text": "Sample: clear, no fluid. Their drainage (shown as green paths) is open on both sides." }
+      },
+      "nasal": {
+        "note": "the wall between the nostrils and the ridges that warm the air",
+        "child": { "state": "normal", "short": "no surgery", "text": "Sample: nothing was done to the septum or the turbinates." },
+        "2020": { "state": "normal", "short": "septum straight", "text": "Sample: no bend in the septum on the CT." }
+      },
+      "adenoids": {
+        "note": "removed in childhood in this sample",
+        "child": { "state": "surgery", "short": "removed at age 9", "text": "Sample: removed at age 9 (adenoidectomy). Drawn where they sat before the operation." },
+        "2020": { "state": "removed", "short": "removed in childhood", "text": "Sample: removed in childhood. Drawn as a faint outline of where they were." }
+      },
+      "mastoid": {
+        "note": "air cells in the bone behind the ear",
+        "child": { "state": "none", "short": "no record", "text": "Sample: no childhood record mentions them." },
+        "2020": { "state": "clear", "short": "full of air (normal)", "text": "Sample: full of air with no fluid, a normal finding." }
+      }
+    }
+  },
+  "teeth": {
+    "source": "Sample data, not a real person's record. The X-rays are one full-mouth series a dentist published of his own mouth (Dr Jeffrey Cross DDS, Wikimedia Commons, CC BY-SA 3.0); the fillings and dates are invented and the pictures are tied to teeth for illustration only.",
+    "today": "2026-11",
+    "start": "2019-01",
+    "notes": [
+      { "date": "2019-03", "text": "SAMPLE DATA, not a real person. First visit: full set of X-rays." },
+      { "date": "2023-05", "text": "Sample: checkup with two bitewing X-rays, nothing new found." }
+    ],
+    "events": {
+      "18": [{ "date": "2019-06", "type": "extracted", "text": "Sample: wisdom tooth removed" }],
+      "48": [{ "date": "2019-06", "type": "extracted", "text": "Sample: wisdom tooth removed" }],
+      "17": [{ "date": "2021-02", "type": "filling", "surfaces": 2, "text": "Sample: two-surface filling" }],
+      "26": [{ "date": "2020-04", "type": "filling", "surfaces": 2, "text": "Sample: two-surface filling" },
+             { "date": "2024-09", "type": "filling", "surfaces": 2, "text": "Sample: filling replaced" }],
+      "35": [{ "date": "2022-10", "type": "filling", "surfaces": 1, "text": "Sample: small filling" }],
+      "46": [{ "date": "2021-11", "type": "filling", "surfaces": 3, "text": "Sample: three-surface filling" },
+             { "date": "2025-03", "type": "sensitive", "text": "Sample: sensitive tooth neck treated" }],
+      "12": [{ "date": "2026-02", "type": "chipped", "text": "Sample: small chip from the edge" },
+             { "date": "2026-02", "type": "planned", "text": "Sample: repair planned for the next visit" }],
+      "11": [{ "date": "2019-03", "type": "xray", "text": "Sample: X-ray of the front teeth at the first visit" }]
+    },
+    "xrays": [
+      { "file": "xrays/upper-right-molars.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["16", "17"], "note": "Sample: upper right molars", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/upper-right-premolars.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["14", "15"], "note": "Sample: upper right premolars", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/upper-right-canine.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["13", "12"], "note": "Sample: upper right canine", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/upper-front.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["11", "21"], "note": "Sample: upper front teeth", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/upper-left-canine.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["22", "23"], "note": "Sample: upper left canine", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/upper-left-molars.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["24", "25", "26", "27"], "note": "Sample: upper left premolars and molars", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/lower-right-molars.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["46", "47"], "note": "Sample: lower right molars", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/lower-right-canine.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["43", "44", "45"], "note": "Sample: lower right canine and premolars", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/lower-front.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["31", "32", "41", "42"], "note": "Sample: lower front teeth", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/lower-left-molars.jpg", "date": "2019-03-12", "kind": "Periapical", "teeth": ["34", "35", "36", "37"], "note": "Sample: lower left premolars and molars", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/bitewing-right.jpg", "date": "2023-05-08", "kind": "Bitewing", "teeth": [], "note": "Sample: checkup, right side", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" },
+      { "file": "xrays/bitewing-left.jpg", "date": "2023-05-08", "kind": "Bitewing", "teeth": [], "note": "Sample: checkup, left side", "credit": "Dr Jeffrey Cross DDS, CC BY-SA 3.0" }
+    ]
+  }
+}

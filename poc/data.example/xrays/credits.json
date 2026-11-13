@@ -1,0 +1,87 @@
+{
+ "_about": "Sample dental X-rays for the demo. One full-mouth series that a dentist published of his own mouth on Wikimedia Commons. Which tooth each picture is tied to in records.json is for illustration only.",
+ "upper-right-molars.jpg": {
+  "title": "ZELLFAZE MN01 MP01 011.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP01_011.JPG"
+ },
+ "upper-right-premolars.jpg": {
+  "title": "ZELLFAZE MN01 MP06 013.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP06_013.JPG"
+ },
+ "upper-right-canine.jpg": {
+  "title": "ZELLFAZE MN01 MP03 002.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP03_002.JPG"
+ },
+ "upper-front.jpg": {
+  "title": "ZELLFAZE MN01 MP04 006.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP04_006.JPG"
+ },
+ "upper-left-canine.jpg": {
+  "title": "ZELLFAZE MN01 MP05 007.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP05_007.JPG"
+ },
+ "upper-left-molars.jpg": {
+  "title": "ZELLFAZE MN01 MP02 000.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP02_000.JPG"
+ },
+ "bitewing-right.jpg": {
+  "title": "ZELLFAZE MN01 MP08 010.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP08_010.JPG"
+ },
+ "bitewing-left.jpg": {
+  "title": "ZELLFAZE MN01 MP09 003.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP09_003.JPG"
+ },
+ "lower-right-molars.jpg": {
+  "title": "ZELLFAZE MN01 MP10 012.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP10_012.JPG"
+ },
+ "lower-left-molars.jpg": {
+  "title": "ZELLFAZE MN01 MP11 004.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP11_004.JPG"
+ },
+ "lower-right-canine.jpg": {
+  "title": "ZELLFAZE MN01 MP12 015.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP12_015.JPG"
+ },
+ "lower-front.jpg": {
+  "title": "ZELLFAZE MN01 MP13 014.JPG",
+  "author": "Dr Jeffrey Cross DDS",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ZELLFAZE_MN01_MP13_014.JPG"
+ }
+}

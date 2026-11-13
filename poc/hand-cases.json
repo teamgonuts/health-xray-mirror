@@ -1,0 +1,77 @@
+{
+  "about": "Example injuries for the Hand X-ray view. The X-rays are public images of other people (credits in assets/hand-xrays/credits.json). Nothing here comes from the user's own records.",
+  "how": "Each break names a bone mesh from assets/hand.json and where it is cut: fromEnd / fromStart are millimetres from the fingertip end / wrist end of the bone's long axis. normal is the cutting plane's direction and shift the movement of the loose piece, both written as [along the bone toward the fingertips, toward the back of the hand, toward the thumb side]. tiltUp / tiltSide tip the loose piece toward the back of the hand / the thumb side, in degrees, around the break (or around the bone's wrist end or fingertip end when pivot is \"start\" or \"end\"). The loose piece is the fingertip side of the break unless move is \"near\" (then the wrist/elbow side moves and the hand side stays on the hand). gap is the width of the dark line between the pieces and jag the depth of its ragged teeth, in millimetres. view / normalView are the part of each X-ray shown in the small card, [left, top, right, bottom] as fractions of the picture; marks are rings drawn on the X-ray around the break, [x, y, radius] with x and radius as fractions of the picture's width and y of its height. lens is half the width of the close-up, in millimetres.",
+  "cases": [
+    {
+      "id": "wrist",
+      "name": "Broken wrist",
+      "term": "Both forearm bones snapped above the wrist, the ends slid past each other",
+      "color": "#ff8a5c",
+      "xray": "wrist-forearm.jpg",
+      "view": [0.12, 0.25, 0.95, 0.664],
+      "marks": [[0.56, 0.555, 0.36]],
+      "normal": "normal-forearm.jpg",
+      "normalView": [0, 0.275, 1, 0.817],
+      "normalFlip": true,
+      "xrayNote": "A wrist and forearm seen from the front, hand at the top. Inside the ring, both bones are broken right through.",
+      "what": "A bad break, the kind a hard fall onto an outstretched hand can cause. The radius (thumb side) and the ulna (little-finger side) have both snapped a hand's width above the wrist joint, and the broken ends have slid past each other. In an adult a break like this is usually put back in line in an operation and held with plates and screws.",
+      "shows": [
+        "Inside the ring both bones stop abruptly. The part attached to the hand no longer lines up with the rest of the forearm.",
+        "The broken ends overlap by more than a centimetre instead of meeting end to end, so the forearm has become shorter.",
+        "In the normal forearm both bones run down from the wrist in smooth, unbroken lines."
+      ],
+      "onHand": "Both of your forearm bones are cut where this break was. The forearm side is shifted sideways and pushed up past the wrist side, as in the X-ray. The close-up shows the two broken ends.",
+      "lens": 46,
+      "breaks": [
+        { "mesh": "radius", "fromEnd": 85, "normal": [1, 0, 0.22], "move": "near", "shift": [12, 3, -14], "tiltSide": -3, "gap": 1.6, "jag": 2.2, "label": "Radius snapped, ends overlapping" },
+        { "mesh": "ulna", "fromEnd": 82, "normal": [1, 0, -0.3], "move": "near", "shift": [10, 3, -15], "tiltSide": -2, "gap": 1.6, "jag": 2.0, "label": "Ulna snapped too" }
+      ]
+    },
+    {
+      "id": "knuckle",
+      "name": "Broken knuckle",
+      "term": "Boxer's fracture: the bone under the little finger's knuckle",
+      "color": "#ffb347",
+      "xray": "knuckle-boxer.jpg",
+      "view": [0.03, 0.38, 0.39, 0.83],
+      "marks": [[0.212, 0.6, 0.075]],
+      "normal": "normal-hand.jpg",
+      "normalView": [0.04, 0.358, 0.415, 0.798],
+      "xrayNote": "The little-finger side of a left hand, seen from the back. The ring and the arrow mark the break.",
+      "what": "A break through the fifth metacarpal, the long bone in the palm that ends in the little finger's knuckle. It typically comes from punching something hard with a closed fist.",
+      "shows": [
+        "Inside the ring the bone is snapped: the long shaft coming up from the wrist ends in a sharp point (arrow).",
+        "The knuckle end has tipped over toward the ring finger and the palm, so the bone looks bent instead of straight.",
+        "In the normal hand the same bone is one straight piece from wrist to knuckle."
+      ],
+      "onHand": "The bone under your little finger's knuckle is cut where this break was, and the knuckle end is tipped over toward your ring finger and your palm, as in the X-ray. The close-up shows the bend.",
+      "lens": 30,
+      "breaks": [
+        { "mesh": "mc5", "fromEnd": 19, "normal": [1, 0, -0.35], "tiltUp": -26, "tiltSide": 20, "shift": [-1, -1.5, 1.2], "gap": 1.3, "jag": 1.5, "label": "Snapped below the knuckle, the end tipped over" }
+      ]
+    },
+    {
+      "id": "finger",
+      "name": "Broken finger",
+      "term": "A crack straight across the first bone of the ring finger",
+      "color": "#ff6f91",
+      "xray": "finger-shaft.jpg",
+      "view": [0, 0.03, 1, 0.857],
+      "marks": [[0.51, 0.39, 0.2]],
+      "normal": "normal-hand.jpg",
+      "normalView": [0.21, 0.232, 0.4, 0.447],
+      "xrayNote": "The first bone of a ring finger, fingertip end at the top, five weeks after it broke. The ring marks the crack.",
+      "what": "A straight crack across the shaft of the finger's first bone (the proximal phalanx), usually from a hard knock or from the finger being bent the wrong way. The two halves stayed in line, so it could heal in a splint without an operation.",
+      "shows": [
+        "Inside the ring a dark line runs straight across the bone. That line is the gap between the two halves.",
+        "The pale band along it is new bone growing across the gap. This picture was taken five weeks after the injury, when the crack is easiest to see.",
+        "In the normal finger the same bone is one unbroken piece."
+      ],
+      "onHand": "The first bone of your ring finger is cut straight across where this crack was. The two halves stay almost in line, as in the X-ray. The close-up shows the crack.",
+      "lens": 21,
+      "breaks": [
+        { "mesh": "b_13_14", "fromEnd": 14, "normal": [1, 0, 0.07], "tiltSide": 3, "shift": [0, 0, 0.5], "gap": 1.5, "jag": 0.9, "tooth": 2.2, "label": "Cracked straight across" }
+      ]
+    }
+  ]
+}

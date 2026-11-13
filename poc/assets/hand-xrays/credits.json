@@ -1,0 +1,63 @@
+{
+ "normal-hand.jpg": {
+  "title": "X-ray of normal hand by dorsoplantar projection.jpg",
+  "author": "Mikael Häggström, M.D.",
+  "licence": "CC0",
+  "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:X-ray_of_normal_hand_by_dorsoplantar_projection.jpg",
+  "original": [
+   1466,
+   2082
+  ],
+  "description": "edit X-ray on the left side of a 31 year old male, showing normal anatomy and no injuries. Taken at Uddevalla Hospital."
+ },
+ "knuckle-boxer.jpg": {
+  "title": "Boxers fracture.JPG",
+  "author": "Roberto J. Galindo",
+  "licence": "CC BY-SA 4.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Boxers_fracture.JPG",
+  "original": [
+   2604,
+   3472
+  ],
+  "description": "PA left hand x-ray showing fracture at the neck of Fifth metacarpal bone, commonly refered to as Boxer's fracture. Maracay, Venezuela; same patient as File:Boxers fracture-lateral xray.JPG."
+ },
+ "wrist-forearm.jpg": {
+  "title": "Unterarmfraktur.jpg",
+  "author": "Hellerhoff",
+  "licence": "CC BY-SA 3.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Unterarmfraktur.jpg",
+  "original": [
+   329,
+   1098
+  ],
+  "description": "Komplette Unterarmfraktur mit deutlicher Verschiebung der Fragmente."
+ },
+ "normal-forearm.jpg": {
+  "title": "X-ray of normal wrist by dorsoplantar projection.jpg",
+  "author": "Mikael Häggström, M.D.",
+  "licence": "CC0",
+  "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:X-ray_of_normal_wrist_by_dorsoplantar_projection.jpg",
+  "original": [
+   690,
+   2122
+  ],
+  "description": "edit X-ray on the left side of a 31 year old male, showing normal anatomy and no injuries. Taken at Uddevalla Hospital."
+ },
+ "finger-shaft.jpg": {
+  "title": "Fraktur Grundphalanx D4 mit Verlauf der Frakturheilung 19M - CR - 001.jpg",
+  "author": "Hellerhoff",
+  "licence": "CC BY-SA 4.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Fraktur_Grundphalanx_D4_mit_Verlauf_der_Frakturheilung_19M_-_CR_-_001.jpg",
+  "original": [
+   1978,
+   1286
+  ],
+  "description": "Fraktur Grundphalanx D4 mit Verlauf der Frakturheilung von links nach rechts Unfallaufnahme (unverschobene Fraktur), 2 Wochen im Verlauf mit etwas deutlicherer Darstellung des Frakturspaltes als Zeichen der physiologischen Resorption und 5 Wochen mit schon deutlich erkennbarem, etwas kalzifizierten Kallus.",
+  "change": "Cropped to the last of its three panels (five weeks after the injury)."
+ }
+}
