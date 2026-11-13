@@ -11,7 +11,7 @@
   html, body { margin:0; min-height:100%; background:var(--bg); color:var(--fg); font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
   .wrap { display:flex; gap:18px; padding:18px; justify-content:center; align-items:flex-start; }
   .stagecol { flex:1 1 auto; min-width:0; display:flex; justify-content:center; position:sticky; top:18px; }
-  .stage { position:relative; width:min(100%, calc((100vh - 36px) * var(--ar, 1.3333))); aspect-ratio:var(--ar, 1.3333);
+  .stage { position:relative; width:min(100%, calc((100vh - 78px) * var(--ar, 1.3333))); aspect-ratio:var(--ar, 1.3333);
            background:radial-gradient(ellipse at 50% 40%, #131a2b, #05070c 75%); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
   .stage canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
   /* the camera picture is drawn inside the 3D canvas, in step with the bones; the <video> only supplies frames */
@@ -89,6 +89,12 @@
   .credits { margin:6px 0 0; padding-left:16px; font-size:11.5px; color:var(--dim); }
   .credits a { color:#9fb4d8; }
   [hidden] { display:none !important; }
+  /* Credit for the project this is built on: fixed to the bottom of the window so it shows in every view. */
+  body { padding-bottom:42px; }
+  .credit { position:fixed; left:0; right:0; bottom:0; z-index:20; display:flex; flex-wrap:wrap; gap:2px 16px; justify-content:center; align-items:center;
+    min-height:42px; box-sizing:border-box; padding:8px 14px; font-size:14px; line-height:1.3; color:#c6cee2; background:var(--panel); border-top:1px solid var(--accent); }
+  .credit b { color:var(--fg); } .credit a { color:var(--accent); font-weight:600; text-decoration:none; white-space:nowrap; } .credit a:hover { text-decoration:underline; }
+  @media (max-width:820px) { .credit .why { display:none; } }
   @media (max-width:900px) { .wrap { flex-direction:column; align-items:stretch; } aside { flex:none; } .stage { width:100%; } .stagecol { position:static; } }
 </style>
 </head>
@@ -153,5 +159,6 @@
   </aside>
 </div>
 <script type="module" src="./hand.js"></script>
+<footer class="credit"><span>Inspired by and built on <b>X-Ray Mirror</b> by <b>MasterOfVFX2070</b><span class="why">: the webcam X-ray idea, the tracking and the X-ray look come from that project</span></span><a href="https://www.reddit.com/r/ClaudeAI/comments/1xstews/i_built_a_webcam_xray_mirror_with_claude_fable_52/" target="_blank" rel="noopener">Original Reddit post ↗</a><a href="https://github.com/MasterOfVFX2070/xray-mirror" target="_blank" rel="noopener">Original code ↗</a></footer>
 </body>
 </html>

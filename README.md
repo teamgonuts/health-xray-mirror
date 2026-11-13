@@ -6,6 +6,12 @@
 </p>
 
 <p align="center">
+  Inspired by and built on <a href="https://github.com/MasterOfVFX2070/xray-mirror"><b>X-Ray Mirror</b> by MasterOfVFX2070</a>.
+  The webcam X-ray idea, the tracking and the X-ray look come from that project:
+  <a href="https://www.reddit.com/r/ClaudeAI/comments/1xstews/i_built_a_webcam_xray_mirror_with_claude_fable_52/"><b>see the original Reddit post</b></a>.
+</p>
+
+<p align="center">
   <a href="https://teamgonuts.github.io/health-xray-mirror/poc/"><b>▶ Try it in your browser</b></a>
   &nbsp;·&nbsp;
   <a href="https://teamgonuts.github.io/health-xray-mirror/poc/?demo">Watch it without a camera</a>
@@ -87,8 +93,8 @@ shows the break, with a close-up in the corner.
 
 <a href="https://teamgonuts.github.io/health-xray-mirror/poc/original.html"><img src="docs/skeleton.gif" alt="A skull and brain drawn over a face and bones over both hands, following every movement."></a>
 
-Skull, brain, muscles and hand bones, by [MasterOfVFX2070](https://github.com/MasterOfVFX2070/xray-mirror).
-This project is built on top of it.
+Skull, brain, muscles and hand bones, by [MasterOfVFX2070](https://github.com/MasterOfVFX2070/xray-mirror)
+([Reddit post](https://www.reddit.com/r/ClaudeAI/comments/1xstews/i_built_a_webcam_xray_mirror_with_claude_fable_52/)). Everything else here is inspired by it and built on top of it.
 
 </td>
 </tr>
@@ -240,8 +246,11 @@ models (about 23 MB) from jsDelivr and Google's model storage.
 
 ## Credits and licences
 
-- **X-Ray Mirror** (`index.html`) is by [MasterOfVFX2070](https://github.com/MasterOfVFX2070/xray-mirror); this
-  repository is a fork of it. The original has no licence file, so its code remains its author's.
+- **X-Ray Mirror** (`index.html`) is by [MasterOfVFX2070](https://github.com/MasterOfVFX2070/xray-mirror), first shown in
+  [this Reddit post](https://www.reddit.com/r/ClaudeAI/comments/1xstews/i_built_a_webcam_xray_mirror_with_claude_fable_52/).
+  This repository is a fork of it: the idea of an X-ray mirror on a webcam, the MediaPipe and three.js approach and the
+  X-ray look all come from that project, and every page of the demo says so at the bottom. The original has no licence
+  file, so its code remains its author's.
 - **Anatomy models:** BodyParts3D, © The Database Center for Life Science, licensed under
   [CC BY-SA 2.1 Japan](https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en).
 - **Hand X-rays:** Mikael Häggström, M.D. (CC0), Hellerhoff (CC BY-SA 3.0 and 4.0) and Roberto J. Galindo

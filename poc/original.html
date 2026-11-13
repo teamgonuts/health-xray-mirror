@@ -6,7 +6,13 @@
 <title>Health Mirror · Original</title>
 <style>
   html, body { margin:0; height:100%; background:#090c13; }
-  iframe { display:block; width:100%; height:100%; border:0; }
+  body { display:flex; flex-direction:column; }
+  iframe { display:block; width:100%; flex:1 1 auto; min-height:0; border:0; }
+  /* Credit for the original project: always on screen, below the app. */
+  .credit { flex:none; display:flex; flex-wrap:wrap; gap:2px 16px; justify-content:center; align-items:center; min-height:42px; box-sizing:border-box; padding:8px 14px;
+    font:14px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:#c6cee2; background:#141926; border-top:1px solid #7fd1ff; }
+  .credit b { color:#eef1f8; } .credit a { color:#7fd1ff; font-weight:600; text-decoration:none; white-space:nowrap; } .credit a:hover { text-decoration:underline; }
+  @media (max-width:820px) { .credit .why { display:none; } }
 </style>
 </head>
 <body>
@@ -14,6 +20,7 @@
      labels. That file is shown as it is, inside a frame; the mode tabs are added to its side panel from here, so the
      original stays exactly as it was published. Anything after ? or # is passed on (for example original.html#demo). -->
 <iframe id="app" allow="camera" title="X-Ray Mirror"></iframe>
+<footer class="credit"><span>This is <b>X-Ray Mirror</b> by <b>MasterOfVFX2070</b>, shown unchanged<span class="why">: the rest of this site is inspired by it and built on it</span></span><a href="https://www.reddit.com/r/ClaudeAI/comments/1xstews/i_built_a_webcam_xray_mirror_with_claude_fable_52/" target="_blank" rel="noopener">Original Reddit post ↗</a><a href="https://github.com/MasterOfVFX2070/xray-mirror" target="_blank" rel="noopener">Original code ↗</a></footer>
 <script>
   // The first time you come here from the Health Mirror, the brain and the labels are switched on.
   // After that the original app remembers your own choices, as it always did.
